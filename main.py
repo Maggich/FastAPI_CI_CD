@@ -10,4 +10,6 @@ def read_root():
 def get_sum(a: int, b: int):
     return {"result": a + b}
 
-# Приветики пистолетики
+@app.get('/ping')
+def ping():
+    return {"status": "ok"}
