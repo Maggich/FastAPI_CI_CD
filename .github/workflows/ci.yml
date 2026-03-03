@@ -13,14 +13,12 @@ jobs:
       - name: Клонируем репозиторий
         uses: actions/checkout@v3
 
-      - name: Устанавливаем Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.11
+      - name: Устанавливаем Docker-Compose
+        run: sudo apt-get update && sudo apt-get install -y docker-compose
       
-      - name: Устанавливаем Зависимости
+      - name: Строим образ
         run: | 
-          pip install -r requirements.txt
+          docker-compose build
 
   test:
     runs-on: ubuntu-latest
@@ -30,23 +28,20 @@ jobs:
       - name: Клонируем репозиторий
         uses: actions/checkout@v3
 
-      - name: Устанавливаем Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.11
-      
-      - name: Устанавливаем Зависимости
-        run: | 
-          pip install -r requirements.txt
+      - name: Устанавливаем Docker-Compose
+        run: sudo apt-get update && sudo apt-get install -y docker-compose
       
       - name: Запускаем Тесты
         run: | 
-          pytest
+          docker-compose run --rm test
   
   deploy:
     runs-on: ubuntu-latest 
     needs: test 
     steps: 
+      - name: Клонируем репозиторий
+        uses: actions/checkout@v3
+
       - name: Trigger Render Deploy 
         run: |
           mkdir -p ../staging
