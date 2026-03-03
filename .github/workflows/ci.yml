@@ -21,7 +21,7 @@ jobs:
       - name: Устанавливаем Зависимости
         run: | 
           pip install -r requirements.txt
-          
+
   test:
     runs-on: ubuntu-latest
     needs: build
@@ -42,4 +42,13 @@ jobs:
       - name: Запускаем Тесты
         run: | 
           pytest
+  
+  deploy:
+    runs-on: ubuntu-latest 
+    needs: test 
+    steps: 
+      - name: Trigger Render Deploy 
+        run: |
+          mkdir -p ../staging
+          cp -r . ../staging/
     
